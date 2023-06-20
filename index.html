@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>jsonsum – streamable json checksumming</title>
+  </head>
+  <body>
+    <h1>jsonsum</h1>
+    <p>jsonsum is an algorithm for hashing data structures in a streamable manner. It also normalizes string and number encodings.</p>
+    <h2>the algorithm</h2>
+    <p>Each type is represented by a token and a value and hashed in some way:</p>
+    <ul>
+      <li><code>bool</code>/<code>null</code>: Append the respective token <code>t</code>/<code>f</code>/<code>n</code> to the hash for <code>true</code>/<code>false</code>/<code>null</code>.</li>
+      <li><code>string</code>: Append the string token <code>s</code> followed by the hash of the string content to the hash.</li>
+      <li><code>object</code>: For each key-value pair, create a separate hash consisting of the key and value, then xor all those hashes together. This allows the keys to be in arbitrary order without changing the hash. Append the object token <code>o</code> followed by the xored hash to the hash.</li>
+      <li><code>array</code>: Append the array start token <code>[</code>, followed by all elements, followed by the array end token <code>]</code> to the hash.</li>
+      <li><code>number</code>: Append the number token <code>i</code>, followed by the normalized number to the hash. To normalize the number, take transform it into scientific notation and shift all non-zero digits left of the decimal point. Then encode the digits as ASCII-encoded decimal, preceded by a minus sign if negative, followed by <code>e</code> and the exponent.</li>
+    </ul>
+  </body>
+</html>
